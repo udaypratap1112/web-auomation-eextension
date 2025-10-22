@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-inter: 'Inter', serif;
+
+   --color-background: #F8FAFC;
+  --color-foreground: black;
+  --color-card: rgba(217, 234, 253, 0.8)		;
+  --color-border: oklch(0 0 0 / 0.1);
+  --color-input: rgba(217, 234, 253, 0.3)	;
+  --color-ring: oklch(0.551 0.027 264.364); /* same accent hue */
+}
+
+@layer base {
+  .dark {
+    --color-background: #18181b;
+    --color-foreground: var(--color-gray-200);
+    --color-card: rgb(39 39 42 / 1);
+    --color-border: oklch(1 0 0 / 10%);
+    --color-input: rgb(228 228 231 / 0.05);
+    --color-ring: oklch(0.551 0.027 264.364);
+  }
+}
+
+input:not(.no-input-style),
+textarea:not(.no-input-style),
+select:not(.no-input-style) {
+  @apply w-full rounded-lg bg-input py-2 px-2 transition;
+}
+label {
+  @apply ml-2 mb-0.5;
+}
+
+button,.button-style {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg font-medium 
+         h-9 px-4 py-2 transition-all 
+         active:scale-95 active:brightness-90 active:shadow-inner;
+}
+
+/* Variant: Filled (default primary look) */
+.button-filled {
+  @apply bg-foreground text-background hover:brightness-110 hover:shadow-md;
+}
+
+/* Variant: Outline */
+.button-outline {
+  @apply border border-foreground text-foreground bg-transparent 
+         hover:bg-foreground/10;
+}
+
+/* Variant: Ghost (minimal) */
+.button-ghost {
+  @apply bg-transparent text-foreground 
+         hover:bg-foreground/10;
+}
+
+/* Variant: Subtle (light fill, still neutral) */
+.button-subtle {
+  @apply bg-foreground/10 text-foreground 
+         hover:bg-foreground/20;
+}
+
+/* Variant: Destructive (use semantic red tone) */
+.button-destructive {
+  @apply bg-red-600 text-white hover:bg-red-700;
+}
+
+*::-webkit-scrollbar {
+  width: 5px; /* thinner! */
+}
+*::-webkit-scrollbar-track {
+  background: black;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(62, 62, 62);
+  border-radius: 5px;
+}
+
+thead {
+  @apply bg-card;
+}

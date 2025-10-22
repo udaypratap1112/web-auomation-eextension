@@ -1,0 +1,36 @@
+import path from 'node:path'
+import { crx } from '@crxjs/vite-plugin'
+import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+import zip from 'vite-plugin-zip-pack'
+import manifest from './manifest.config.js'
+import { name, version } from './package.json'
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      '@': `${path.resolve(__dirname, 'src')}`,
+    },
+  },
+  plugins: [
+    react(),
+    crx({ manifest }),tailwindcss(),
+    zip({ outDir: 'release', outFileName: `crx-${name}-${version}.zip` }),
+  ],
+   build: {
+    rollupOptions: {
+      input: {
+       
+        panel: "src/panel/index.html",   // 👈 Add this line
+      },
+    },
+  },
+  server: {
+    cors: {
+      origin: [
+        /chrome-extension:\/\//,
+      ],
+    },
+  },
+})
