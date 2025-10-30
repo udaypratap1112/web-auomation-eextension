@@ -1,7 +1,7 @@
 import React from "react";
 import { useWorkflowsData } from "../context/WorkflowContext";
 import { useSheetData } from "../context/SheetContext";
-import { sendMessageToInspectedWindow } from "../utils/extension";
+import { sendMessageToActiveTab } from "../utils/extension";
 
 const QuickRunPopup = () => {
   const { workflows } = useWorkflowsData();
@@ -9,7 +9,7 @@ const QuickRunPopup = () => {
 
   // 🟢 Run selected workflow
   async function startAutomation(workflow) {
-    sendMessageToInspectedWindow( {
+    sendMessageToActiveTab( {
             action: "runWorkflow",
             workflow: workflow,
             data: Object.fromEntries(currentRowData.entries()),

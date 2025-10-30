@@ -2,7 +2,7 @@ import React from "react";
 import { Edit, Play, Trash, Plus } from "lucide-react";
 import { useWorkflowsData } from "../context/WorkflowContext";
 import { useSheetData } from "../context/SheetContext";
-import { handleExport, sendMessageToInspectedWindow } from "../utils/extension";
+import { handleExport, sendMessageToActiveTab } from "../utils/extension";
 
 
 const WorkFlows = ({ onOpenEditor }) => {
@@ -12,7 +12,7 @@ const WorkFlows = ({ onOpenEditor }) => {
   // 🟢 Run automation for selected workflow
   async function startAutomation(workflow, data = {}) {
   
-    sendMessageToInspectedWindow( {
+    sendMessageToActiveTab( {
         action: "runWorkflow",
         workflow: workflow,
         data: Object.fromEntries(currentRowData.entries()),

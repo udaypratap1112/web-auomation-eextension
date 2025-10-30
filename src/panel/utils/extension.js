@@ -2,7 +2,7 @@ function isChromeExtensionEnvironment() {
   return typeof chrome !== 'undefined' && typeof chrome.tabs !== 'undefined' && typeof chrome.storage !== 'undefined'
 }
 
- async function getInspectedWindowTabID() {
+ async function getCurrentTabID() {
     // 🧠 If inside a DevTools panel or side panel:
   if (chrome.devtools?.inspectedWindow) {
     return chrome.devtools.inspectedWindow.tabId;
@@ -14,9 +14,9 @@ function isChromeExtensionEnvironment() {
   return tabs[0].id;
 }
 
-async function sendMessageToInspectedWindow(msg) {
+async function sendMessageToActiveTab(msg) {
   if (isChromeExtensionEnvironment()) {
-    const tabId =  await getInspectedWindowTabID()
+    const tabId =  await getCurrentTabID()
     chrome.tabs.sendMessage(tabId, msg)
   }
 }
@@ -117,4 +117,4 @@ const handleImport = (event) => {
 
 
 
-export{isChromeExtensionEnvironment,getInspectedWindowTabID,sendMessageToInspectedWindow,copyValue,handleExport,handleImport}
+export{isChromeExtensionEnvironment,getCurrentTabID,sendMessageToActiveTab,copyValue,handleExport,handleImport}

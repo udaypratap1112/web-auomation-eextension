@@ -4,6 +4,7 @@ import App from './views/App.jsx'
 import { enableDarkMode, disableDarkMode, toggleDarkMode, toggleDarkByState } from './utils/theme.js'
 import { recordUserWorkflow } from './utils/recordWorkflow.js'
 import { runWorkflow } from './utils/runWorkflow.js'
+import Jexl from 'jexl'
 
 console.log('[CRXJS] Hello world from content script!')
 
@@ -39,6 +40,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       window.stopRecording()
       break
 
+    case 'runCondition':
+      console.log("running the condition");
+      aaFunction(message.data,message.condition);
+      
+      break
+
     default:
       console.warn('Unknown action:', message.action)
       break
@@ -53,3 +60,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 //     <App />
 //   </StrictMode>,
 // )
+
+
+async function aaFunction(data,condition){
+  let result= await Jexl.eval(condition,{data})
+  console.log(result)
+}

@@ -1,5 +1,5 @@
 import React, { useState, createContext, useContext, useEffect } from 'react';
-import { getInspectedWindowTabID,isChromeExtensionEnvironment } from '../utils/extension';
+import { getCurrentTabID,isChromeExtensionEnvironment } from '../utils/extension';
 /**
  * @typedef {Object} SheetDataContextType
  * @property {Array<Array<any>>} sheetData - The entire sheet data with rows and columns.
@@ -52,7 +52,7 @@ useEffect(() => {
     // Immediately tell Chrome this handler will respond asynchronously
     (async () => {
       try {
-        const inspectedTabId = await getInspectedWindowTabID(); // unified function
+        const inspectedTabId = await getCurrentTabID(); // unified function
 
         if (sender.tab && sender.tab.id === inspectedTabId) {
           console.log("Received message from inspected tab:", message);

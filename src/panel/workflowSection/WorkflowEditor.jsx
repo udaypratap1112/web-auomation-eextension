@@ -2,7 +2,7 @@ import {  useEffect, useState } from "react";
 import { Reorder } from "framer-motion";
 import { MousePointerClick, Keyboard, CheckSquare, ListFilter, GripVertical, ChevronUp, ChevronDown,  Trash } from "lucide-react";
 import { useSheetData } from "../context/SheetContext";
-import { sendMessageToInspectedWindow } from "../utils/extension";
+import { sendMessageToActiveTab } from "../utils/extension";
 import { useWorkflowsData } from "../context/WorkflowContext";
 import { copyValue } from "../utils/extension";
 import { v4 as uuid } from "uuid";
@@ -251,11 +251,11 @@ const truncateSelector = (selector, maxLength = 40) => {
 
 
 function startWorkflowRecording() {
-  sendMessageToInspectedWindow({action:"recordUser"})
+  sendMessageToActiveTab({action:"recordUser"})
 }
 
 function stopWorkflowRecording() {
-  sendMessageToInspectedWindow({action:"stopRecording"})
+  sendMessageToActiveTab({action:"stopRecording"})
 }
 
 
