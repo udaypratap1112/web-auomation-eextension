@@ -1,28 +1,21 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './views/App.jsx'
-import { enableDarkMode, disableDarkMode, toggleDarkMode, toggleDarkByState } from './utils/theme.js'
+import { syncDarkMode } from './utils/theme.js'
 import { recordUserWorkflow } from './utils/recordWorkflow.js'
 import { runWorkflow } from './utils/runWorkflow.js'
 import Jexl from 'jexl'
 
 console.log('[CRXJS] Hello world from content script!')
 
-chrome.runtime.sendMessage({ action: 'getTheme' }, function (response) {
-  console.log(response) // undefined if no response
-  if (!response) return
-  if (response.action == 'changeTheme') {
-    console.log(response.isTabDark)
-    toggleDarkByState(response.isTabDark)
-  }
-})
+syncDarkMode()
 
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   switch (message.action) {
     case 'toggleTheme':
       console.log('Request to change the theme')
-      toggleDarkMode()
+      syncDarkMode()
       break
 
     case 'runWorkflow':

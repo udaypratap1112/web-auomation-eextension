@@ -27,7 +27,7 @@ const Toolbar = () => {
   return (
 
     <div className='w-full flex flex-col gap-2'>
-        <button className='button-subtle' onClick={handleClick}>{isTabDark?<Moon size={18}/>:<Sun size={18}/>}</button>
+        <button className='button-subtle' onClick={handleThemeChange}>{isTabDark?<Moon size={18}/>:<Sun size={18}/>}</button>
         <button className='button-subtle' onClick={handleRecordworkflow}>Record Workfloe</button>
         <button className='button-subtle' onClick={stopRecording}>Stop Recording</button>
         <textarea value={condition} onChange={(e)=>setCondition(e.target.value)}/>
@@ -40,3 +40,25 @@ const Toolbar = () => {
 }
 
 export default Toolbar
+
+
+
+
+async function handleThemeChange() {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  const domain = new URL(tab.url).hostname;
+
+  const { darkSites = [] } = await chrome.storage.local.get("darkSites");
+  const index = darkSites.indexOf(domain);
+
+  if (index === -1) {
+    darkSites.push(domain);
+  } else {
+    darkSites.splice(index, 1);
+  }
+
+  await chrome.storage.local.set({ darkSites });
+
+  // 🔹 Send message to active tab
+  await sendMessageToActiveTab({ action: "toggleTheme"});
+}

@@ -47,33 +47,7 @@ const SheetDataProvider = ({ children }) => {
   }, [sheetData, currentRow,currentHeader]);
 
 
-useEffect(() => {
-  function handleMessage(message, sender, sendResponse) {
-    // Immediately tell Chrome this handler will respond asynchronously
-    (async () => {
-      try {
-        const inspectedTabId = await getCurrentTabID(); // unified function
 
-        if (sender.tab && sender.tab.id === inspectedTabId) {
-          console.log("Received message from inspected tab:", message);
-
-          // Example: respond with theme info
-          sendResponse({ action: "changeTheme", isTabDark });
-        }
-      } catch (err) {
-        console.error("Error in message handler:", err);
-      }
-    })();
-
-    return true; // ✅ Keep the message channel open for async sendResponse()
-  }
-
-  chrome.runtime.onMessage.addListener(handleMessage);
-
-  return () => {
-    chrome.runtime.onMessage.removeListener(handleMessage);
-  };
-}, [isTabDark]);
 
 
 

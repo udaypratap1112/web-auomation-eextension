@@ -30,26 +30,18 @@ function disableDarkMode() {
     if (style) style.remove();
 }
 
-/**
- * Toggle dark mode
- */
-function toggleDarkMode() {
-    const style = document.getElementById(darkModeStyleId);
-    if (style) {
-        disableDarkMode();
-    } else {
-        enableDarkMode();
-    }
+
+async function syncDarkMode() {
+  const { darkSites = [] } = await chrome.storage.local.get("darkSites");
+  const domain = location.hostname;
+
+  if (darkSites.includes(domain)) {
+    enableDarkMode();
+  } else {
+    // if style exists but domain isn't in array → remove it
+    disableDarkMode();
+  }
 }
 
-function toggleDarkByState(isDark){
-    // const style = document.getElementById(darkModeStyleId);
-    if(isDark){
-        enableDarkMode()
-    }else{
-        disableDarkMode
-    }
 
-}
-
-export {enableDarkMode,disableDarkMode,toggleDarkMode,toggleDarkByState}
+export {enableDarkMode,disableDarkMode,syncDarkMode}
