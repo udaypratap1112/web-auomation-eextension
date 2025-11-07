@@ -15,4 +15,5 @@
     console.log("file not updating")
     console.log("checking chrome APIs",chrome)
     console.log("file not updating v.3.0")
+    console.log("chrome.runtime.sendMessage",chrome.runtime.sendMessage)
 })();
