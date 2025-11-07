@@ -12,5 +12,5 @@
 
     console.log("this is user script running v.10.1")
     console.log("from uday pratap")
-    console.log(chrome,chrome.runtime)
+    console.log("checking chrome APIs",chrome,chrome.runtime)
 })();
