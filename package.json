@@ -11,6 +11,7 @@
   "dependencies": {
     "@medv/finder": "^4.0.2",
     "@tailwindcss/vite": "^4.1.4",
+    "@xyflow/react": "^12.9.2",
     "framer-motion": "^12.7.4",
     "jexl": "^2.3.0",
     "lucide-react": "^0.503.0",

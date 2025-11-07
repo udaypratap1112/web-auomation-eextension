@@ -4,6 +4,7 @@ import crxLogo from "@/assets/crx.svg";
 import SheetReader from "./sheetSection/SheetReader";
 import WorkflowEditor from "./workflowSection/WorkflowEditor";
 import WorkFlows from "./workflowSection/WorkFlows";
+import ReactWorkflowEditor from "../components/reactFlow/ReactWorkflowEditor";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("home");
@@ -25,22 +26,16 @@ export default function App() {
   };
 
   return (
-    <div className="bg-background text-foreground">
+    <div className="bg-background text-foreground min-h-screen ">
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      <div className="min-h-screen p-1 font-inter text-sm">
+      <div className="p-1 font-inter text-sm">
         {activeTab === "home" && <SheetReader />}
 
-        {activeTab === "workflows" && (
-          <WorkFlows onOpenEditor={handleOpenEditor} createWorkFlow={createWorkFlow} />
-        )}
+        {/* {activeTab === "workflows" && ( <WorkFlows onOpenEditor={handleOpenEditor} createWorkFlow={createWorkFlow} /> )} */}
+        {activeTab === "workflows" && ( <ReactWorkflowEditor/> )}
 
-        {activeTab === "editor" && (
-          <WorkflowEditor
-            existingWorkflow={selectedWorkflow}
-            onBack={handleBackToWorkflows}
-          />
-        )}
+        {activeTab === "editor" && ( <WorkflowEditor existingWorkflow={selectedWorkflow} onBack={handleBackToWorkflows} /> )}
       </div>
     </div>
   );

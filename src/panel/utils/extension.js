@@ -21,24 +21,32 @@ async function sendMessageToActiveTab(msg) {
   }
 }
 
- function copyValue(value) {
-    const textarea = document.createElement('textarea')
-    textarea.value = value
-    textarea.style.position = 'fixed' // Avoid scrolling to bottom
-    textarea.style.opacity = '0'
-    document.body.appendChild(textarea)
-    textarea.focus()
-    textarea.select()
+async function copyValue(value) {
+  try {
+    await navigator.clipboard.writeText(value);
+    console.log('✅ Copied to clipboard:', value);
+  } catch (err) {
+    console.warn('⚠️ Clipboard API failed, using fallback:', err);
+
+    const textarea = document.createElement('textarea');
+    textarea.value = value;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
 
     try {
-      const successful = document.execCommand('copy')
-      console.log(successful ? 'Copied to clipboard:' : 'Copy failed:', value)
-    } catch (err) {
-      console.error('Fallback: Unable to copy', err)
+      const successful = document.execCommand('copy');
+      console.log(successful ? '✅ Copied (fallback):' : '❌ Copy failed:', value);
+    } catch (err2) {
+      console.error('❌ Fallback copy failed:', err2);
     }
 
-    document.body.removeChild(textarea)
+    document.body.removeChild(textarea);
   }
+}
+
 
 
 const handleExport = (workflows) => {

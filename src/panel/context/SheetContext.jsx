@@ -28,7 +28,7 @@ const SheetDataProvider = ({ children }) => {
   const [currentRowData, setCurrentRowData] = useState(()=>new Map()); // Current row's data in object format
   const [currentRow, setCurrentRow] = useState(2); // Row index (1-based; 0 is header)
   const [currentHeader,setCurrentHeader]=useState(1)
-  const [isTabDark,setIsTabDark]=useState(false)
+
 
   useEffect(() => {
     if (sheetData.length > 0 && currentRow > 0 &&currentRow < sheetData.length&&currentHeader>0) {
@@ -51,7 +51,7 @@ const SheetDataProvider = ({ children }) => {
 
 
 
-  const contextValue = { sheetData, setSheetData, currentRowData, setCurrentRowData, currentRow, setCurrentRow,currentHeader,setCurrentHeader,isTabDark,setIsTabDark};
+  const contextValue = { sheetData, setSheetData, currentRowData, setCurrentRowData, currentRow, setCurrentRow,currentHeader,setCurrentHeader};
 
   return (
     <SheetDataContext.Provider value={contextValue}>

@@ -6,6 +6,7 @@ import { recordUserWorkflow } from './utils/recordWorkflow.js'
 import { runWorkflow } from './utils/runWorkflow.js'
 import Jexl from 'jexl'
 
+import executeInPageContext from './utils/handleCustomJs.js'
 console.log('[CRXJS] Hello world from content script!')
 
 syncDarkMode()
@@ -33,11 +34,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       window.stopRecording()
       break
 
-    case 'runCondition':
+    case 'runCustomCode':
       console.log("running the condition");
-      aaFunction(message.data,message.condition);
+      executeInPageContext(message.code,message.data)
       
       break
+    // case 'runCondition':
+    //   console.log("running the condition");
+    //   aaFunction(message.data,message.condition);
+      
+    //   break
 
     default:
       console.warn('Unknown action:', message.action)
