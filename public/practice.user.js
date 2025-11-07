@@ -14,5 +14,5 @@
     console.log("from uday pratap")
     console.log("file not updating")
     console.log("checking chrome APIs",chrome,chrome.runtime)
-    console.log("file not updating")
+    console.log("file not updating v.2.0")
 })();
