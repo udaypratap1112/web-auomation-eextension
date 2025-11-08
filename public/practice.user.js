@@ -12,8 +12,8 @@
 
     console.log("this is user script running v.10.1")
     console.log("from uday pratap")
-    console.log("file not updating")
-    console.log("checking chrome APIs",chrome)
-    console.log("file not updating v.3.0")
-    console.log("chrome.runtime.sendMessage",chrome.runtime.sendMessage)
+    
+const code = "const name = 'Uday';\nconst msg = `Hello ${name}`;\nconsole.log(msg);";
+eval(code);
+
 })();
