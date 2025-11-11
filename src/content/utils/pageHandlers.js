@@ -28,33 +28,41 @@
   }
 }
 
-function setInputValue(selector, value) {
-  const el = document.querySelector(selector);
-  if (!el) {
-    console.warn(`Input not found: ${selector}`);
+function setInputValue(selector, inputValue) {
+  try {
+    const element = document.querySelector(selector);
+    if (!element) {
+      console.warn(`No element found for selector: ${selector}`);
+      return false;
+    }
+
+    const previousValue = element.value;
+
+    // Get native setter from the prototype
+    const prototype = Object.getPrototypeOf(element);
+    const valueSetter = Object.getOwnPropertyDescriptor(prototype, 'value')?.set;
+
+    if (valueSetter) {
+      valueSetter.call(element, inputValue);
+    } else {
+      element.value = inputValue;
+    }
+
+    // For React tracking (must be before input event)
+    const tracker = element._valueTracker;
+    if (tracker) tracker.setValue(previousValue);
+
+    // Dispatch events
+    element.dispatchEvent(new Event('input', { bubbles: true }));
+    element.dispatchEvent(new Event('change', { bubbles: true }));
+
+    return true;
+  } catch (error) {
+    console.error('Error setting input value:', error);
     return false;
   }
-
-  el.focus();
-
-  // Save the current value (React-specific)
-  const lastValue = el.value;
-  el.value = value;
-
-  // React internal tracking fix
-  const tracker = el._valueTracker;
-  if (tracker) {
-    tracker.setValue(lastValue);
-  }
-
-  // Dispatch events to notify any framework listeners
-  el.dispatchEvent(new Event("input", { bubbles: true }));
-  el.dispatchEvent(new Event("change", { bubbles: true }));
-
-  el.blur();
-
-  return true;
 }
+
 
 
 
@@ -78,18 +86,11 @@ function setSelectValue(selector, value) {
     return false;
   }
 
-  // Store previous value before change
-  const lastValue = el.value;
 
   // Set new value
   el.value = matchedOption.value;
 
-  // React fix (other frameworks ignore)
-  const tracker = el._valueTracker;
-  if (tracker) tracker.setValue(lastValue);
 
-  // Fire events to notify all frameworks
-  el.dispatchEvent(new Event("input", { bubbles: true }));
   el.dispatchEvent(new Event("change", { bubbles: true }));
 
   return true;
@@ -109,18 +110,7 @@ function setSelectValue(selector, value) {
   window.history.forward();
 }
 
- function triggerKeyboardShortcut(key, modifiers = {}) {
-  const event = new KeyboardEvent('keydown', {
-    key: key,
-    ctrlKey: modifiers.ctrl || false,
-    shiftKey: modifiers.shift || false,
-    altKey: modifiers.alt || false,
-    metaKey: modifiers.meta || false,
-    bubbles: true,
-    cancelable: true
-  });
-  document.dispatchEvent(event);
-}
+
 
  function hoverElement(selector) {
   const el = document.querySelector(selector);
@@ -164,4 +154,4 @@ function setCheckboxOrRadioValue(selector, cValue = true) {
 }
 
 
-export {waitForElement,wait,clickElement,hoverElement,scrollToElement,setCheckboxOrRadioValue,triggerKeyboardShortcut,goForward,goBack,navigateTo,setInputValue,setSelectValue}
+export {waitForElement,wait,clickElement,hoverElement,scrollToElement,setCheckboxOrRadioValue,goForward,goBack,navigateTo,setInputValue,setSelectValue}
